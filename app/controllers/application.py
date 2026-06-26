@@ -5,6 +5,7 @@ class Application():
 
     def __init__(self):
         self.pages = {
+            'pagina': self.pagina
         }
 
 
@@ -15,3 +16,8 @@ class Application():
 
     def helper(self):
         return template('app/views/html/helper')
+
+
+    def pagina(self):
+    # seu código complementar aqui
+        return template('app/views/html/pagina')

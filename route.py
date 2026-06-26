@@ -21,7 +21,9 @@ def helper(info= None):
 
 #-----------------------------------------------------------------------------
 # Suas rotas aqui:
-
+@app.route('/pagina', methods=['GET'])
+def action_pagina():
+    return ctl.render('pagina')
 
 
 #-----------------------------------------------------------------------------
