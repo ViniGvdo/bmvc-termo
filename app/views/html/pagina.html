@@ -3,21 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Termo Simples</title>
-    <link rel="stylesheet" href="../../static/css/style.css">
+    <title>Termo - BMVC Bottle</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+    <div id="game-container">
+        <h1>TERMO - B_MVC</h1>
+        
+        <div class="setup-container">
+            <label for="dificuldade">Dificuldade: </label>
+            <select id="dificuldade">
+                <option value="facil">Fácil (7 tentativas)</option>
+                <option value="medio" selected>Médio (6 tentativas)</option>
+                <option value="dificil">Difícil (5 tentativas)</option>
+            </select>
+            <button id="btn-iniciar">Iniciar Jogo</button>
+        </div>
 
-    <h1>TERMO</h1>
+        <div id="tabuleiro"></div>
 
-    <div id="grid"></div>
+        <div class="input-container">
+            <input type="text" id="input-palpite" placeholder="Palpite" disabled>
+            <button id="btn-enviar" disabled>Enviar</button>
+        </div>
+        
+        <div id="mensagem"></div>
+    </div>
 
-    <div id="mensagem">Digite uma palavra e aperte Enter!</div>
-    
-    <div id="teclado"></div>
-
-    <button id="btn-reiniciar">Jogar Novamente</button>
-
-    <script src="../../static/js/script.js"></script>
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
