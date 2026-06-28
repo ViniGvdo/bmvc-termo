@@ -1,7 +1,7 @@
 import random
 from bottle import template
 # Importação das classes da camada de Modelo
-from app.models.jogo_models import Tabuleiro, ModoFacil, ModoMedio, ModoDificil
+from ...app.models.models import Tabuleiro, ModoFacil, ModoMedio, ModoDificil
 
 class Application():
 

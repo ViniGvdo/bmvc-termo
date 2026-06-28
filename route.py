@@ -1,4 +1,4 @@
-from app.controllers.application import Application
+from .app.controllers.application import Application
 from bottle import Bottle, run, request, static_file
 
 app = Bottle()
