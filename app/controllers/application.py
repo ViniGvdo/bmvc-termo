@@ -11,7 +11,6 @@ class Application():
         }
         # Atributos encapsulados para controle do jogo
         self.__tabuleiro = None
-        self.__banco_palavras = ["TERMO", "LOGIC", "CORES", "POO", "PYTHON", "MOUSE", "TECLA", "JOGOS"]
 
     def render(self, page):
         content = self.pages.get(page, self.helper)
@@ -35,7 +34,11 @@ class Application():
         else:
             dificuldade = ModoMedio()
 
-        palavra_secreta = random.choice(self.__banco_palavras)
+        with open("palavras.txt", "r", encoding="utf-8") as arquivo:
+            palavras = arquivo.read().splitlines()
+
+        palavra_secreta = random.choice(palavras)
+
         # Associação e Composição ocorrendo dentro do Tabuleiro
         self.__tabuleiro = Tabuleiro(dificuldade, palavra_secreta)
         
