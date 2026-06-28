@@ -1,4 +1,4 @@
-from .app.controllers.application import Application
+from app.controllers.application import Application
 from bottle import Bottle, run, request, static_file
 
 app = Bottle()
@@ -17,6 +17,10 @@ def helper(info=None):
 # -----------------------------------------------------------------------------
 # Rota da Interface do Usuário:
 @app.route('/pagina', method='GET')
+def action_pagina():
+    return ctl.render('pagina')
+
+@app.route('/', method='GET')
 def action_pagina():
     return ctl.render('pagina')
 
