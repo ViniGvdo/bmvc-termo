@@ -1,6 +1,5 @@
 import random
 from bottle import template
-# Importação das classes da camada de Modelo
 from ..models.models import Tabuleiro, ModoFacil, ModoMedio, ModoDificil
 
 class Application():
@@ -9,7 +8,6 @@ class Application():
         self.pages = {
             'pagina': self.pagina
         }
-        # Atributos encapsulados para controle do jogo
         self.__tabuleiro = None
 
     def render(self, page):
@@ -26,7 +24,6 @@ class Application():
     # REGRAS DE NEGÓCIO E FLUXO DO JOGO TERMO
     # ==========================================
     def novo_jogo(self, modo: str) -> dict:
-        # Polimorfismo na seleção da estratégia de dificuldade
         if modo == "facil":
             dificuldade = ModoFacil()
         elif modo == "dificil":
@@ -39,7 +36,6 @@ class Application():
 
         palavra_secreta = random.choice(palavras)
 
-        # Associação e Composição ocorrendo dentro do Tabuleiro
         self.__tabuleiro = Tabuleiro(dificuldade, palavra_secreta)
         
         return {
@@ -62,20 +58,19 @@ class Application():
         if len(palpite) != len(secreta):
             return {"erro": f"A palavra deve ter {len(secreta)} letras."}
 
-        # Preenche a linha atual através do encapsulamento exposto pelo Tabuleiro
         linha_atual = self.__tabuleiro.linhas[rodada]
         linha_atual.preencher_palavra(palpite)
 
-        # Lógica de validação das cores (Verde, Amarelo, Cinza)
+        # Lógica de validação das cores (Verde, Amarelo, Cinza, Vermelho)
         letras_restantes = list(secreta)
         
-        # 1ª Passada: Posições exatas (CORRETA)
+        # 1 - Posições exatas (CORRETA)
         for i, celula in enumerate(linha_atual.celulas):
             if celula.letra == secreta[i]:
                 celula.status = "CORRETA"
                 letras_restantes[i] = None
 
-        # 2ª Passada: Posições deslocadas (DESLOCADA) ou erradas (INCORRETA)
+        # 2 - Passada: Posições deslocadas (DESLOCADA) ou erradas (INCORRETA)
         for i, celula in enumerate(linha_atual.celulas):
             if celula.status != "CORRETA":
                 if celula.letra in letras_restantes and celula.letra is not None:

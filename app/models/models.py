@@ -1,9 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-# ==========================================
-# HERANÇA E POLIMORFISMO
-# ==========================================
 class DificuldadeJogo(ABC):
     @abstractmethod
     def obter_max_tentativas(self) -> int:
@@ -31,9 +28,6 @@ class ModoDificil(DificuldadeJogo):
     def obter_nome(self) -> str:
         return "Difícil"
 
-# ==========================================
-# ENCAPSULAMENTO, COMPOSIÇÃO E ASSOCIAÇÃO
-# ==========================================
 class Celula:
     def __init__(self, letra: str = ""):
         self.__letra = letra.upper()
@@ -58,7 +52,6 @@ class Celula:
 
 class Linha:
     def __init__(self, tamanho: int = 5):
-        # COMPOSIÇÃO: Linha cria e possui suas próprias Células
         self.__celulas = [Celula() for _ in range(tamanho)]
 
     @property
@@ -71,11 +64,10 @@ class Linha:
 
 class Tabuleiro:
     def __init__(self, dificuldade: DificuldadeJogo, palavra_secreta: str):
-        self.__dificuldade = dificuldade  # ASSOCIAÇÃO
+        self.__dificuldade = dificuldade 
         self.__palavra_secreta = palavra_secreta.upper()
         self.__rodada_atual = 0
         
-        # COMPOSIÇÃO: O Tabuleiro controla a instanciação das Linhas
         max_tentativas = self.__dificuldade.obter_max_tentativas()
         self.__linhas = [Linha(len(palavra_secreta)) for _ in range(max_tentativas)]
 
