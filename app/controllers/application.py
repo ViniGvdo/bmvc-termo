@@ -34,7 +34,7 @@ class Application():
         else:
             dificuldade = ModoMedio()
 
-        with open("palavras.txt", "r", encoding="utf-8") as arquivo:
+        with open("app/controllers/palavras.txt", "r", encoding="utf-8") as arquivo:
             palavras = arquivo.read().splitlines()
 
         palavra_secreta = random.choice(palavras)
