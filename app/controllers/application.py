@@ -1,4 +1,5 @@
 import random
+import os
 from bottle import template
 from ..models.models import Tabuleiro, ModoFacil, ModoMedio, ModoDificil
 
@@ -6,9 +7,9 @@ class Application():
 
     def __init__(self):
         self.pages = {
-            'index': self.index, #-----------------------------------------------
+            'index': self.index, 
             'pagina': self.pagina,
-            'rankings': self.rankings #-----------------------------------------------
+            'rankings': self.rankings 
         }
         self.__tabuleiro = None
         self.__jogador_atual = None
@@ -20,13 +21,13 @@ class Application():
     def helper(self):
         return template('app/views/html/helper')
 
-    def index(self): #-----------------------------------------------
+    def index(self): 
         return template('app/views/html/index')
 
     def pagina(self):
         return template('app/views/html/pagina')
 
-    def rankings(self): #-----------------------------------------------
+    def rankings(self): 
         return template('app/views/html/rankings')
 
     def novo_jogo(self, modo: str, username: str = "Convidado") -> dict:
@@ -43,7 +44,10 @@ class Application():
         else:
             dificuldade = ModoMedio()
 
-        with open("app/controllers/palavras.txt", "r", encoding="utf-8") as arquivo:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        caminho_palavras = os.path.join(base_dir, "palavras.txt")
+
+        with open(caminho_palavras, "r", encoding="utf-8") as arquivo:
             palavras = arquivo.read().splitlines()
 
         palavra_secreta = random.choice(palavras)
