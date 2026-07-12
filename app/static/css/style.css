@@ -9,56 +9,39 @@ body {
     margin: 0;
 }
 
-#game-container {
-    text-align: center;
-    max-width: 500px;
-}
+#game-container { text-align: center; max-width: 500px; width: 100%; padding: 20px;}
+.index-container { background: #222; padding: 30px; border-radius: 8px; }
 
-h1 {
-    letter-spacing: 4px;
-}
+h1 { letter-spacing: 4px; margin-bottom: 5px; }
 
-.setup-container, .input-container {
-    margin: 20px 0;
-}
+.header { margin-bottom: 20px; }
+#stats { font-size: 14px; color: #a1a1aa; }
 
-select, input, button {
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
-    font-size: 16px;
+.instrucoes {
+    text-align: left; background-color: #3a3a3c; padding: 15px;
+    border-radius: 8px; margin-bottom: 20px; font-size: 14px;
 }
+.instrucoes ul { padding-left: 20px; }
+.instrucoes li { margin-bottom: 8px; }
 
-input {
-    text-transform: uppercase;
-    width: 150px;
-    text-align: center;
-}
+.setup-container { margin: 20px 0; }
+select, input, button { padding: 10px; border-radius: 4px; border: none; font-size: 16px; margin: 5px; }
+button { background-color: #538d4e; color: white; cursor: pointer; font-weight: bold; width: 100%; }
 
-button {
-    background-color: #538d4e;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
+#tabuleiro { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; align-items: center;}
+.linha-tabuleiro { display: flex; gap: 5px; }
 
-button:disabled {
-    background-color: #3a3a3c;
-    cursor: not-allowed;
+#teclado { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; align-items: center; }
+.linha-teclado { display: flex; gap: 6px; justify-content: center; width: 100%; }
+.tecla {
+    background-color: #818384; color: white; font-weight: bold; font-size: 14px;
+    height: 50px; flex: 1; max-width: 45px; min-width: 30px;
+    border-radius: 4px; cursor: pointer; display: flex;
+    justify-content: center; align-items: center; padding: 0;
 }
+.tecla.tecla-acao { max-width: 65px; flex: 1.5; font-size: 12px; }
 
-#tabuleiro {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-bottom: 20px;
-}
-
-.linha-tabuleiro {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
+#mensagem { margin-top: 15px; font-size: 18px; font-weight: bold; }
 
 .celula-tabuleiro {
     width: 50px;
@@ -70,26 +53,125 @@ button:disabled {
     font-size: 24px;
     font-weight: bold;
     text-transform: uppercase;
+    color: #ffffff !important;
+    background-color: transparent;
 }
 
-/* Status das Cores */
-.celula-tabuleiro.CORRETA {
-    background-color: #538d4e;
-    border-color: #538d4e;
-}
-
-.celula-tabuleiro.DESLOCADA {
-    background-color: #b59f3b;
-    border-color: #b59f3b;
-}
-
-.celula-tabuleiro.INCORRETA {
-    background-color: #3a3a3c;
-    border-color: #3a3a3c;
-}
-
-#mensagem {
-    margin-top: 15px;
-    font-size: 18px;
+.tecla {
+    background-color: #818384;
+    color: #ffffff !important;
     font-weight: bold;
+    font-size: 14px;
+    height: 50px;
+    flex: 1;
+    max-width: 45px;
+    min-width: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: none;
+}
+
+.CORRETA { 
+    background-color: #538d4e !important; 
+    border-color: #538d4e !important; 
+    color: #ffffff !important; 
+}
+.DESLOCADA { 
+    background-color: #b59f3b !important; 
+    border-color: #b59f3b !important; 
+    color: #ffffff !important; 
+}
+.INCORRETA { 
+    background-color: #3a3a3c !important; 
+    border-color: #3a3a3c !important; 
+    color: #ffffff !important; 
+}
+
+.botoes-fim button {
+    margin: 5px;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+.botoes-fim button:hover {
+    opacity: 0.9;
+}
+
+/* --- ESTILOS DE RANKING E ABAS DE NAVEGADOR --- */
+.ranking-wrapper {
+    background: #222;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.AbasNavegador {
+    display: flex;
+    border-bottom: 2px solid #3a3a3c;
+    margin-bottom: 15px;
+}
+
+.aba {
+    background: #1c1c1e;
+    color: #8e8e93 !important;
+    border: 1px solid #3a3a3c;
+    border-bottom: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-right: 4px;
+    transition: background 0.2s, color 0.2s;
+    width: auto !important;
+}
+
+.aba:hover {
+    background: #2c2c2e;
+    color: #ffffff !important;
+}
+
+.aba.ativa {
+    background: #3a3a3c;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-color: #3a3a3c;
+    position: relative;
+    top: 2px;
+}
+
+/* Tabelas */
+.conteudo-ranking {
+    background: #121213;
+    padding: 15px;
+    border-radius: 4px;
+    min-height: 250px;
+}
+
+.tabela-rank {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.tabela-rank th, .tabela-rank td {
+    padding: 10px;
+    border-bottom: 1px solid #2c2c2e;
+    color: #ffffff !important;
+}
+
+.tabela-rank th {
+    background-color: #1c1c1e;
+    font-weight: bold;
+    color: #b59f3b !important;
+}
+
+.tabela-rank tr:hover {
+    background-color: #1c1c1e;
 }
