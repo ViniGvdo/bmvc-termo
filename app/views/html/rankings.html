@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMOO - Rankings</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="game-container" class="ranking-wrapper">
+        <h1>RANKINGS 🏆</h1>
+        
+        <div class="AbasNavegador">
+            <button id="aba-sequencia" class="aba ativa" onclick="mudarAba('sequencia')">Sequência de Vitórias</button>
+            <button id="aba-vitorias" class="aba" onclick="mudarAba('vitorias')">Número de Vitórias</button>
+        </div>
+
+        <div class="conteudo-ranking">
+            <div id="painel-sequencia" class="painel-tabela">
+                <table class="tabela-rank">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Jogador</th>
+                            <th>Sequência Atual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-sequencia"></tbody>
+                </table>
+            </div>
+
+            <div id="painel-vitorias" class="painel-tabela" style="display: none;">
+                <table class="tabela-rank">
+                    <thead>
+                        <tr>
+                            <th>Posição</th>
+                            <th>Jogador</th>
+                            <th>Vitórias Totais</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-vitorias"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='/'" style="background-color: #3a3a3c; margin-top:20px; width:auto; padding: 10px 30px;">Voltar ao Menu</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", carregarRankings);
+
+        async function carregarRankings() {
+            const response = await fetch('/api/rankings');
+            const dados = await response.json();
+
+            const corpoSeq = document.getElementById('corpo-sequencia');
+            corpoSeq.innerHTML = dados.top_sequencias.length ? "" : "<tr><td colspan='3'>Nenhum dado encontrado</td></tr>";
+            dados.top_sequencias.forEach((player, i) => {
+                corpoSeq.innerHTML += `<tr><td>${i+1}º</td><td>${player.username}</td><td>${player.vitorias_seguidas} 🔥</td></tr>`;
+            });
+
+            const corpoVit = document.getElementById('corpo-vitorias');
+            corpoVit.innerHTML = dados.top_vitorias.length ? "" : "<tr><td colspan='3'>Nenhum dado encontrado</td></tr>";
+            dados.top_vitorias.forEach((player, i) => {
+                corpoVit.innerHTML += `<tr><td>${i+1}º</td><td>${player.username}</td><td>${player.vitorias_totais} 🏆</td></tr>`;
+            });
+        }
+
+        function mudarAba(tipo) {
+            document.querySelectorAll('.aba').forEach(b => b.classList.remove('ativa'));
+            document.querySelectorAll('.painel-tabela').forEach(p => p.style.display = 'none');
+
+            if (tipo === 'sequencia') {
+                document.getElementById('aba-sequencia').classList.add('ativa');
+                document.getElementById('painel-sequencia').style.display = 'block';
+            } else {
+                document.getElementById('aba-vitorias').classList.add('ativa');
+                document.getElementById('painel-vitorias').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
