@@ -6,9 +6,12 @@ class Application():
 
     def __init__(self):
         self.pages = {
-            'pagina': self.pagina
+            'index': self.index, #-----------------------------------------------
+            'pagina': self.pagina,
+            'rankings': self.rankings #-----------------------------------------------
         }
         self.__tabuleiro = None
+        self.__jogador_atual = None
 
     def render(self, page):
         content = self.pages.get(page, self.helper)
@@ -17,13 +20,22 @@ class Application():
     def helper(self):
         return template('app/views/html/helper')
 
+    def index(self): #-----------------------------------------------
+        return template('app/views/html/index')
+
     def pagina(self):
         return template('app/views/html/pagina')
 
-    # ==========================================
-    # REGRAS DE NEGÓCIO E FLUXO DO JOGO TERMO
-    # ==========================================
-    def novo_jogo(self, modo: str) -> dict:
+    def rankings(self): #-----------------------------------------------
+        return template('app/views/html/rankings')
+
+    def novo_jogo(self, modo: str, username: str = "Convidado") -> dict:
+        try:
+            from ..models.models import Jogador
+            self.__jogador_atual = Jogador(username)
+        except ImportError:
+            self.__jogador_atual = None
+
         if modo == "facil":
             dificuldade = ModoFacil()
         elif modo == "dificil":
@@ -35,14 +47,20 @@ class Application():
             palavras = arquivo.read().splitlines()
 
         palavra_secreta = random.choice(palavras)
-
         self.__tabuleiro = Tabuleiro(dificuldade, palavra_secreta)
         
-        return {
+        resposta = {
             "status": "Jogo iniciado",
             "tentativas_maximas": dificuldade.obter_max_tentativas(),
             "tamanho_palavra": len(palavra_secreta)
         }
+
+        if self.__jogador_atual:
+            resposta["jogador_stats"] = {
+                "vitorias_totais": self.__jogador_atual.vitorias_totais,
+                "vitorias_seguidas": self.__jogador_atual.vitorias_seguidas
+            }
+        return resposta
 
     def processar_tentativa(self, palpite: str) -> dict:
         if not self.__tabuleiro:
@@ -61,16 +79,13 @@ class Application():
         linha_atual = self.__tabuleiro.linhas[rodada]
         linha_atual.preencher_palavra(palpite)
 
-        # Lógica de validação das cores (Verde, Amarelo, Cinza, Vermelho)
         letras_restantes = list(secreta)
         
-        # 1 - Posições exatas (CORRETA)
         for i, celula in enumerate(linha_atual.celulas):
             if celula.letra == secreta[i]:
                 celula.status = "CORRETA"
                 letras_restantes[i] = None
 
-        # 2 - Passada: Posições deslocadas (DESLOCADA) ou erradas (INCORRETA)
         for i, celula in enumerate(linha_atual.celulas):
             if celula.status != "CORRETA":
                 if celula.letra in letras_restantes and celula.letra is not None:
@@ -84,7 +99,12 @@ class Application():
         ganhou = palpite == secreta
         perdeu = not ganhou and self.__tabuleiro.rodada_atual >= len(self.__tabuleiro.linhas)
 
-        return {
+        if ganhou and self.__jogador_atual:
+            self.__jogador_atual.registrar_vitoria(self.__tabuleiro.dificuldade.obter_nome())
+        elif perdeu and self.__jogador_atual:
+            self.__jogador_atual.registrar_derrota()
+
+        resposta_dict = {
             "letras": [{"letra": c.letra, "status": c.status} for c in linha_atual.celulas],
             "ganhou": ganhou,
             "perdeu": perdeu,
@@ -92,3 +112,20 @@ class Application():
             "fim_de_jogo": ganhou or perdeu,
             "resposta": secreta if perdeu else None
         }
+
+        if self.__jogador_atual:
+            resposta_dict["jogador_stats"] = {
+                "vitorias_totais": self.__jogador_atual.vitorias_totais,
+                "vitorias_seguidas": self.__jogador_atual.vitorias_seguidas
+            }
+        return resposta_dict
+
+    def obter_rankings_data(self) -> dict:
+        try:
+            from ..models.models import Jogador
+            return {
+                "top_vitorias": Jogador.obter_top_vitorias(),
+                "top_sequencias": Jogador.obter_top_sequencias()
+            }
+        except Exception:
+            return {"top_vitorias": [], "top_sequencias": []}
