@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMOO - Início</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div id="game-container" class="index-container">
+        <h1>TERMOO</h1>
+        
+        <div class="instrucoes">
+            <h3>Como Jogar</h3>
+            <p>Descubra a palavra certa. Depois de cada tentativa, as peças mostram quão perto você está da solução.</p>
+            <ul>
+                <li><span style="color:#538d4e; font-weight:bold;">Verde:</span> A letra está na palavra e na posição certa.</li>
+                <li><span style="color:#b59f3b; font-weight:bold;">Amarelo:</span> A letra está na palavra, mas na posição errada.</li>
+                <li><span style="color:lightgray; font-weight:bold;">Cinza:</span> A letra não está na palavra.</li>
+            </ul>
+        </div>
+
+        <div class="setup-container">
+            <input type="text" id="username" placeholder="Seu Nickname" required>
+            <label for="dificuldade" style="display:block; margin-top:10px;">Dificuldade: </label>
+            <select id="dificuldade">
+                <option value="facil">Fácil (7 tentativas)</option>
+                <option value="medio" selected>Médio (6 tentativas)</option>
+                <option value="dificil">Difícil (5 tentativas)</option>
+            </select>
+            <br><br>
+            <button onclick="irParaJogo()">Jogar</button>
+            <button onclick="window.location.href='/rankings'" style="background-color: #b59f3b; margin-top: 10px;">Ver Rankings 🏆</button>
+        </div>
+    </div>
+
+    <script>
+        function irParaJogo() {
+            const username = document.getElementById('username').value.trim();
+            const dificuldade = document.getElementById('dificuldade').value;
+            if (!username) { alert("Por favor, insira um nickname."); return; }
+            
+            sessionStorage.setItem('termo_username', username);
+            sessionStorage.setItem('termo_dificuldade', dificuldade);
+            
+            window.location.href = '/pagina';
+        }
+    </script>
+</body>
+</html>
